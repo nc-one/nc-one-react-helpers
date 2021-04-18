@@ -1,0 +1,98 @@
+.DateTimeSelector {
+  height: 283.2px;
+}
+
+.DateTimeSelector {
+  display: flex;
+  position: fixed;
+  z-index: 9999;
+  background-color: #fff;
+  box-shadow: rgb(0 0 0 / 13%) 0px 6.4px 14.4px 0px, rgb(0 0 0 / 11%) 0px 1.2px 3.6px 0px;
+}
+
+.DateTimePicker__input input {
+  cursor: pointer;
+}
+
+.DateTimeSelector__ok-button {
+  padding: 0;
+  margin: 0;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  outline: 0;
+  background-color: #fff;
+  font-size: 12px;
+  border-radius: 3px;
+  font-weight: 500;
+  position: absolute;
+  bottom: 10px;
+  right: 120px;
+  z-index: 10000;
+}
+
+.DateTimeSelector__ok-button:hover {
+  background-color: #f0f0f0;
+}
+
+.DateTimeSelector__ok-button:active {
+  background-color: #EDEBE9;
+}
+
+.DateTimeSelector__time {
+  display: flex;
+  padding: 15px;
+  border-left: 1px solid lightgray;
+}
+
+.DateTimeSelector__time-item {
+  overflow-y: hidden;
+  height: inherit;
+}
+
+.DateTimeSelector__hours {
+  margin-right: 2px;
+}
+
+.column__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  outline: 0;
+  background-color: #fbfbfb;
+  font-size: 12px;
+  border-radius: 3px;
+}
+
+.column__button:hover {
+  background-color: #f0f0f0;
+}
+
+.column__button:active {
+  background-color: #EDEBE9;
+}
+
+.column__button_selected {
+  background-color: #EDEBE9 !important;
+}
+
+.column__button_current p {
+  background-color: #0078D4 !important;
+  color: #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.js-goToday {
+  position: absolute;
+}
