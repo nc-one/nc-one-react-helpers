@@ -1,11 +1,12 @@
 {
   "name": "nc-one-react-helpers",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "Developments that will simplify the life of a React developer",
-  "main": "build/index.js",
+  "main": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc -p .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clear": "rd lib /s/q",
+    "build": "tsc -d -p . && mkdirp lib/src/styles && xcopy src\\styles lib\\src\\styles",
+    "build-publish": "npm run build && npm publish && npm run clear"
   },
   "repository": {
     "type": "git",
@@ -18,15 +19,22 @@
     "useMediaQuery",
     "nc-one"
   ],
-  "author": "Naruto Minecrafter <www.iwanmayor.com@gmail.com>",
+  "files": [
+    "lib"
+  ],
+  "author": "Naruto Minecrafter <www.iwanmayor.com@gmail.com> (https://github.com/NarutoMinecrafter)",
   "license": "ISC",
-  "dependencies": {
+  "dependencies": {},
+  "peerDependencies": {
+    "@fluentui/react": ">=8.11.0",
+    "moment": ">=2.29.1",
+    "react": ">=17.0.2"
+  },
+  "devDependencies": {
     "@fluentui/react": "^8.11.0",
     "moment": "^2.29.1",
     "react": "^17.0.2",
-    "typescript": "^4.2.4"
-  },
-  "devDependencies": {
+    "typescript": "^4.2.4",
     "@types/node": "^14.14.41",
     "@types/react": "^17.0.3"
   }
