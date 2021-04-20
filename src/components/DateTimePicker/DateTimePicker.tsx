@@ -155,7 +155,7 @@ const TimeColumn: React.FC<TimeColumnProps> = ({ type, selectedDate, setSelected
   );
 };
 
-type DateTimePickerProps = {
+interface DateTimePickerProps extends ITextFieldProps {
   date?: Date;
   stringDate?: string;
   format?: string;
@@ -163,7 +163,7 @@ type DateTimePickerProps = {
   onDateTimeChange?: (date?: Date) => void;
   getDateTimeString?: (date?: string) => void;
   CalendarStrings?: ICalendarStrings;
-} & ITextFieldProps;
+};
 
 type TimeColumnProps = {
   type: 'minutes' | 'hours';
