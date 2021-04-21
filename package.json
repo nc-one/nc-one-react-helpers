@@ -1,23 +1,34 @@
 {
   "name": "nc-one-react-helpers",
-  "version": "1.0.5",
+  "version": "1.0.17",
   "description": "Developments that will simplify the life of a React developer",
   "main": "lib/index.d.ts",
   "scripts": {
     "clear": "rd lib /s/q",
     "build": "tsc -d -p . && mkdirp lib/src/styles && xcopy src\\styles lib\\src\\styles",
-    "build-publish": "npm run build && npm publish && npm run clear"
+    "build-publish": "npm run build && npm version patch --no-git-tag-version && npm publish && npm run clear",
+    "build-publish:minor": "npm run build && npm version minor --no-git-tag-version && npm publish && npm run clear",
+    "build-publish:major": "npm run build && npm version major --no-git-tag-version && npm publish && npm run clear"
   },
   "repository": {
     "type": "git",
-    "url": "(https://github.com/nc-one/nc-one-react-helpers)"
+    "url": "git+https://github.com/nc-one/nc-one-react-helpers"
   },
+  "homepage": "https://vk.com/narutominecrafter",
   "keywords": [
     "DateTimePicker",
+    "DateTimeInput",
+    "date time picker",
+    "date time input",
+    "picker",
     "sleep",
     "validations",
+    "formik validations",
     "useMediaQuery",
-    "nc-one"
+    "use media query",
+    "media query",
+    "nc-one",
+    "NC1"
   ],
   "files": [
     "lib"
