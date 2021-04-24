@@ -1,6 +1,6 @@
 # nc-one-react-helpers
 
-###### Наработки фронтендеров компани [NC1](https://nc-one.com/)
+###### Наработки front-end разаработчиков компании [NC1](https://nc-one.com/)
 
 `npm i nc-one-react-helpers` или `yarn add nc-one-react-helpers`
 
@@ -75,7 +75,7 @@ type useMediaQuery = (query: string) => boolean
 
 Принимает строку как в css [`@usemedia`](https://developer.mozilla.org/ru/docs/Web/CSS/@media) и возвращает `true` в случае если ширина экрана удовлетворяет условие или `false` в противном случае.
 
-## 3. Различные вспомагательные элементы:
+## 3. Различные вспомогательные элементы:
 
 ### 3.1. функции:
 
@@ -114,15 +114,15 @@ import { sleep } from 'nc-one-react-helpers'
 **Пример использования:**
 ```typescript
 onSubmit={async (values) => {
-     setProgressIndicator(true);  // показать спинер
+     setProgressIndicator(true);  // показать спиннер
 
     try {
-        sleep(500) // подождать 500 милисекунд
+        sleep(500) // подождать 500 миллисекунд
         // сделать имитацию запроса на сервер
     } catch (e) {
         console.log(e)
     } finally {
-        setProgressIndicator(false) // скрыть спинер
+        setProgressIndicator(false) // скрыть спиннер
     }
 }}
 ```
@@ -134,7 +134,7 @@ type sleep = (ms: number) => Promise<unknown>
 
 Подождать введённое количество милисекунд, и только потом выполнить код ниже
 
-## 3.2. Валидации:
+### 3.2. Валидации:
 
 **Импорт:**
 ```typescript

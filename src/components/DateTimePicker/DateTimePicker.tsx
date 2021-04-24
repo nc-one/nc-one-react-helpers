@@ -37,7 +37,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = React.memo(
     }, [selectedDate]);
 
     return (
-      <div className='DateTimePicker'>
+      <div className='DateTimePicker' onKeyDown={(e) => e.key === 'Escape' && setShowCalendar(false)}>
         <TextField
           className='DateTimePicker__input'
           iconProps={withIcon !== false ? { iconName: 'DateTime' } : undefined}
@@ -47,36 +47,36 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = React.memo(
           {...rest}
         />
         {showCalendar && (
-          <div className='DateTimeSelector'>
-            <button className='DateTimeSelector__ok-button' onClick={() => setShowCalendar(false)}>
-              OK
-            </button>
-            <Calendar
-              className='DateTimeSelector__date'
-              strings={CalendarStrings || initialCalendarStrings}
-              value={selectedDate!}
-              isDayPickerVisible
-              isMonthPickerVisible
-              showGoToToday
-              showMonthPickerAsOverlay
-              onSelectDate={(date) => {
-                setSelectedDate(
-                  new Date(
-                    date.getFullYear(),
-                    date.getMonth(),
-                    date.getDate(),
-                    selectedDate ? selectedDate.getHours() : nowDate.getHours(),
-                    selectedDate ? selectedDate.getMinutes() : nowDate.getMinutes()
-                  )
-                );
-              }}
-            />
-            <div className='DateTimeSelector__time'>
-              <div className='DateTimeSelector__hours DateTimeSelector__time-item'>
-                <TimeColumn selectedDate={selectedDate} setSelectedDate={setSelectedDate} type='hours' />
-              </div>
-              <div className='DateTimeSelector__minutes DateTimeSelector__time-item'>
-                <TimeColumn selectedDate={selectedDate} setSelectedDate={setSelectedDate} type='minutes' />
+          <div className='DateTimeSelector-container'>
+            <div className='DateTimeSelector__close-zone' onClick={() => setShowCalendar(false)} />
+            <div className='DateTimeSelector__body'>
+              <Calendar
+                className='DateTimeSelector__date'
+                strings={CalendarStrings || initialCalendarStrings}
+                value={selectedDate!}
+                isDayPickerVisible
+                isMonthPickerVisible
+                showGoToToday
+                showMonthPickerAsOverlay
+                onSelectDate={(date) => {
+                  setSelectedDate(
+                    new Date(
+                      date.getFullYear(),
+                      date.getMonth(),
+                      date.getDate(),
+                      selectedDate ? selectedDate.getHours() : nowDate.getHours(),
+                      selectedDate ? selectedDate.getMinutes() : nowDate.getMinutes()
+                    )
+                  );
+                }}
+              />
+              <div className='DateTimeSelector__time'>
+                <div className='DateTimeSelector__hours DateTimeSelector__time-item'>
+                  <TimeColumn selectedDate={selectedDate} setSelectedDate={setSelectedDate} type='hours' />
+                </div>
+                <div className='DateTimeSelector__minutes DateTimeSelector__time-item'>
+                  <TimeColumn selectedDate={selectedDate} setSelectedDate={setSelectedDate} type='minutes' />
+                </div>
               </div>
             </div>
           </div>
@@ -155,7 +155,7 @@ const TimeColumn: React.FC<TimeColumnProps> = ({ type, selectedDate, setSelected
   );
 };
 
-interface DateTimePickerProps extends ITextFieldProps {
+type DateTimePickerProps = {
   date?: Date;
   stringDate?: string;
   format?: string;
@@ -163,7 +163,7 @@ interface DateTimePickerProps extends ITextFieldProps {
   onDateTimeChange?: (date?: Date) => void;
   getDateTimeString?: (date?: string) => void;
   CalendarStrings?: ICalendarStrings;
-};
+} & ITextFieldProps;
 
 type TimeColumnProps = {
   type: 'minutes' | 'hours';
