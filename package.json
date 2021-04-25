@@ -1,6 +1,6 @@
 {
   "name": "nc-one-react-helpers",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Developments that will simplify the life of a React developer",
   "main": "lib/index.d.ts",
   "scripts": {

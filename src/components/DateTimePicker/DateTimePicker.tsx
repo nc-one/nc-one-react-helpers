@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../../styles/DateTimePicker.css';
+import './DateTimePicker.css';
 import { TextField, ITextFieldProps, ICalendarStrings, Calendar, initializeIcons } from '@fluentui/react';
 import moment from 'moment';
 
@@ -23,12 +23,42 @@ const initialCalendarStrings = {
   yearPickerHeaderAriaLabel: '{0}, select to change the month'
 };
 
+let input: HTMLDivElement | undefined | null;
+
 export const DateTimePicker: React.FC<DateTimePickerProps> = React.memo(
   ({ date, stringDate, format, withIcon, onDateTimeChange, getDateTimeString, CalendarStrings, ...rest }: DateTimePickerProps): JSX.Element => {
     const [selectedDate, setSelectedDate] = useState(date || stringDate ? new Date(moment(stringDate, format || 'MM.DD.YYYY, hh:mma').format('YYYY-MM-DDThh:mm:ss.sss')) : undefined);
-    const [showCalendar, setShowCalendar] = useState(false);
+    const [isShowCalendar, setIsShowCalendar] = useState(false);
+    const [selectorTop, setSelectorTop] = useState<number>();
+    const [random, setRandom] = useState<number>();
 
     const nowDate = new Date();
+
+    const body = document.body, html = document.documentElement;
+
+    const documentHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+    let inputBottomY = input ? Math.round(input.getBoundingClientRect().top + pageYOffset + input.getBoundingClientRect().height) : undefined;
+
+    const editSelectorTop = () => {
+      inputBottomY = input ? Math.round(input.getBoundingClientRect().top + pageYOffset + input.getBoundingClientRect().height) : undefined;
+
+      if (Number(input?.className.split(' ')[1]) === random) {
+        if (inputBottomY && inputBottomY + 283.2 <= documentHeight) {
+          setSelectorTop(inputBottomY);
+        } else {
+          setSelectorTop(documentHeight - 283.2);
+        }
+      }
+    };
+
+    useEffect(() => {
+      setRandom(Math.random());
+    }, []);
+
+    useEffect(() => {
+      editSelectorTop();
+    });
 
     useEffect(() => {
       onDateTimeChange && onDateTimeChange(selectedDate);
@@ -37,19 +67,22 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = React.memo(
     }, [selectedDate]);
 
     return (
-      <div className='DateTimePicker' onKeyDown={(e) => e.key === 'Escape' && setShowCalendar(false)}>
+      <div ref={div => input = div} className={`DateTimePicker ${random}`} onKeyDown={(e) => e.key === 'Escape' && setIsShowCalendar(false)} >
         <TextField
           className='DateTimePicker__input'
           iconProps={withIcon !== false ? { iconName: 'DateTime' } : undefined}
           value={selectedDate ? moment(selectedDate).format(format || 'MM.DD.YYYY, hh:mma') : ''}
           readOnly
-          onClick={() => setShowCalendar(true)}
+          onClick={() => {
+            setIsShowCalendar(true);
+            editSelectorTop();
+          }}
           {...rest}
         />
-        {showCalendar && (
-          <div className='DateTimeSelector-container'>
-            <div className='DateTimeSelector__close-zone' onClick={() => setShowCalendar(false)} />
-            <div className='DateTimeSelector__body'>
+        {isShowCalendar && (
+          <div className='DateTimeSelector'>
+            <div className='DateTimeSelector__close-zone' onClick={() => setIsShowCalendar(false)} />
+            <div className='DateTimeSelector__body' style={{ top: selectorTop ? `${selectorTop}px` : '' }} >
               <Calendar
                 className='DateTimeSelector__date'
                 strings={CalendarStrings || initialCalendarStrings}
@@ -133,7 +166,7 @@ const TimeColumn: React.FC<TimeColumnProps> = ({ type, selectedDate, setSelected
     <div
       className='column'
       onKeyDown={(e) => (e.key === 'ArrowUp' ? setCenterItem((prevCenterItem) => prevCenterItem + 1) : e.key === 'ArrowDown' && setCenterItem((prevCenterItem) => prevCenterItem - 1))}
-      onTouchMove={(e) => swipe(e.targetTouches[0].clientY)}
+      onTouchMoveCapture={(e) => swipe(e.targetTouches[0].clientY)}
       onTouchStart={(e) => setSavedSwipeY(e.targetTouches[0].clientY)}
       onWheel={(e) => (e.deltaY > 0 ? setCenterItem((prevCenterItem) => prevCenterItem + 1) : setCenterItem((prevCenterItem) => prevCenterItem - 1))}
     >

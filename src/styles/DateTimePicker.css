@@ -8,6 +8,7 @@
 
 .DateTimeSelector__body {
   position: fixed;
+  top: auto;
   display: flex;
   height: 283.2px;
   z-index: 9999;
