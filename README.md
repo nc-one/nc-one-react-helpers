@@ -1,10 +1,205 @@
 # nc-one-react-helpers
 
+##
+
+###### Developments of the company's front-end developers [NC1](https://nc-one.com/)
+
+`npm i nc-one-react-helpers` or `yarn add nc-one-react-helpers`
+
+## Documentation in English:
+
+## 1. Components:
+
+### 1.1. DateTimePicker:
+
+![](https://github.com/nc-one/nc-one-react-helpers/blob/master/demo/DateTimePicker.png?raw=true)
+
+**Import:**
+```typescript
+import { DateTimePicker } from 'nc-one-react-helpers'
+```
+
+**Example of use:**
+```typescript
+<DateTimePicker
+	date={new Date()}
+	onDateTimeChange={(date) => console.log(date)}
+	getDateTimeString={(date) => console.log(date)}
+	format='MMMM DD, YYYY - hh:mm'
+/>
+```
+
+**Interface:**
+```typescript
+interface DateTimePickerProps extends ITextFieldProps {
+	date?: Date
+	stringDate?: string
+	format?: string
+	withIcon?: boolean
+	onDateTimeChange?: (date?: Date) => void
+	getDateTimeString?: (date?: string) => void
+	CalendarStrings?: ICalendarStrings
+}
+```
+
+| Name | Type | Default value | Description |
+|:-----------------:|:---------------:|:-------------:|:------------------------------------------------------------:|
+| date | date | undefined | date and time to be recorded and selected automatically |
+| stringDate | string | undefined | date and time which will be written and selected automatically as a string (string must be in the same format as format) |
+| format | string | "MM.DD.YYYY, hh:mma" | format of the string in which the date and time will be displayed and output more [here](https://momentjs.com/) |
+| withIcon | boolean | true | whether the time date icon will be shown |
+| onDateTimeChange | (date?: Date) => void | undefined | Do something with the date time every time it changes |
+| getDateTimeString | [ICalendarStrings](https://developer.microsoft.com/en-us/fluentui#/controls/web/references/datetimeutilities#ICalendarStrings) | [initialCalendarStrings](https://github.com/nc-one/nc-one-react-helpers/blob/master/demo/initialCalendarStrings.png?raw=true) | the way the [calendar](https://developer.microsoft.com/en-us/fluentui#/controls/web/calendar) lines will be displayed |
+
+`DateTimePickerProps` is inherited from [`ITextFieldProps`](https://developer.microsoft.com/en-us/fluentui#/controls/web/textfield#ITextFieldProps), so all [`TextField`](https://developer.microsoft.com/en-us/fluentui#/controls/web/textfield) props will work fine!
+
+## 2. Hooks:
+
+### 2.1. useMediaQuery:
+
+**Import:**.
+```typescript
+import { useMediaQuery } from 'nc-one-react-helpers'
+```
+
+**Example of use:**
+```typescript
+const matches = useMediaQuery('(min-width: 800px)')
+
+if (matches) return <>Screen width greater than 800px</>
+else return <>Screen width 800px or less</>
+```
+
+**Type:**
+```typescript
+type useMediaQuery = (query: string) => boolean
+```
+
+Takes the string as in css [`@usemedia`](https://developer.mozilla.org/ru/docs/Web/CSS/@media) and returns `true` if the screen width satisfies the condition or `false` otherwise.
+
+## 3. Various auxiliary elements:
+
+### 3.1. functions:
+
+#### 3.1.1. UTCHoursPlus:
+
+**Import:**.
+```typescript
+import { UTCHoursPlus } from 'nc-one-react-helpers'
+```
+
+**Example usage:**
+```typescript
+export const Time: React.FC = () => {
+    const [time, setTime] = useState('')
+
+    setTimeout(() => setTime(`${UTCHoursPlus(1)}:${new Date().getUTCMinutes()}:${new Date().getUTCSeconds()}`), 1000)
+
+    return <>Storage time: {time} (UTC+01:00)</>
+}
+```
+
+**type:**
+```typescript
+type UTCHoursPlus = (plus: number) => number
+```
+
+Accepts how much to increase the current time and returns UTC clock+input parameter
+
+#### 3.1.2:
+
+**Import:**
+```typescript
+import { sleep } from 'nc-one-react-helpers'
+```
+
+**Example of use:**
+```typescript
+onSubmit={async (values) => {
+     setProgressIndicator(true); // show spinner
+
+    try {
+        sleep(500) //wait 500 milliseconds
+        // mimic a request to the server
+    } catch (e) {
+        console.log(e)
+    } finally {
+        setProgressIndicator(false) // hide the spinner
+    }
+}}
+```
+
+**Type:**
+```typescript.
+type sleep = (ms: number) => Promise<unknown>
+```
+
+Wait for the entered number of milliseconds, and then execute the code below
+
+### 3.2. Validations:
+
+**Import:**
+```typescript
+import { required, invalidEmail, invalidPassword, matchPassword, positiveNumber } from 'nc-one-react-helpers'
+```
+
+**Type:**
+```typescript
+type required = (value: string, text?: string | undefined) => string | undefined
+
+type invalidEmail = (value: string, text?: string | undefined) => string | undefined
+
+type invalidPassword = (value: string, text?: string | undefined) => string | undefined
+
+type matchPassword = (password: string, rePassword: string, text?: string | undefined) => string | undefined
+
+type positiveNumber = (value: number, text?: string | undefined) => string | undefined
+```
+
+**Example of use:**
+```typescript
+validate={({ email, position, password, repassword }) => {
+    if (
+        !required(email) &&
+        !invalidEmail(email) &&
+        !required(position) &&
+        !positiveNumber(position) &&
+        !required(password) &&
+        !invalidPassword(password) &&
+        !& required(repassword) &&
+        !!invalidPassword(repassword) &&
+        !!matchPassword(password, repassword)
+    ) return {};
+
+    return {
+        email: required(email) || invalidEmail(email),
+        position: required(position) || positiveNumber(position),
+        password: required(password) || invalidPassword(password),
+        repassword: required(repassword) || invalidPassword(repassword) || matchPassword(password, repassword)
+    };
+}}
+```
+
+- `required` - Accepts `value` and returns error text if `value` is empty or `undefined` otherwise.
+- `invalidEmail` - Accepts `value` and returns error text if `value` is not a valid email address or `undefined` otherwise.
+- `invalidPassword` - Accepts `value` and returns error text if `value` fails validation check (too simple) or `undefined` otherwise.
+        
+***password validation:** minimum 8 characters, minimum 1 Latin letter A-Za-z, minimum 1 digit 0-9*
+- `matchPassword` - Accepts `password` and `rePassword` and returns error text if passwords do not match or `undefined` otherwise.
+- `positiveNumber` - Accepts a number and returns an error text if it is negative or `undefined` otherwise.
+     
+`text` - Optional parameter for all validations. It determines what the error message will be. If it is not specified, the default (in Polish) message will be displayed
+
+
+# ==================================================
+
+# nc-one-react-helpers
+
 ###### Наработки front-end разаработчиков компании [NC1](https://nc-one.com/)
 
 `npm i nc-one-react-helpers` или `yarn add nc-one-react-helpers`
 
-# Документация:
+# Документация на Русском:
 
 ## 1. Компоненты:
 
