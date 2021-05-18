@@ -191,7 +191,7 @@ validate={({ email, position, password, repassword }) => {
 `text` - Optional parameter for all validations. It determines what the error message will be. If it is not specified, the default (in Polish) message will be displayed
 
 
-# ==================================================
+# =====================================
 
 # nc-one-react-helpers
 
